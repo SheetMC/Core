@@ -27,14 +27,6 @@ class ErrorBuilder() {
     var message: String = "No message provided."
     var throwable: Throwable? = null
 
-    fun message(message: String) {
-        this.message = message
-    }
-
-    fun throwable(throwable: Throwable) {
-        this.throwable = throwable
-    }
-
     fun build(): Result.Error = Result.Error(message, throwable)
 }
 
