@@ -31,13 +31,13 @@ class FailureBuilder() {
 }
 
 fun success(): Outcome.Success<Boolean> = Outcome.Success(true)
-fun <T> success(type: T): Outcome.Success<T> = Outcome.Success(type)
+fun <T> success(value: T): Outcome.Success<T> = Outcome.Success(value)
 fun <T> success(block: () -> T): Outcome.Success<T> {
     return Outcome.Success(block())
 }
 
-fun failed(message: String, throwable: Throwable? = null): Outcome.Failure = Outcome.Failure(message, throwable)
-fun failed(block: FailureBuilder.() -> Unit): Outcome.Failure {
+fun failure(message: String, throwable: Throwable? = null): Outcome.Failure = Outcome.Failure(message, throwable)
+fun failure(block: FailureBuilder.() -> Unit): Outcome.Failure {
     val builder = FailureBuilder()
     block(builder)
     return builder.build()
