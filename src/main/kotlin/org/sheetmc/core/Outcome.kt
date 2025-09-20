@@ -20,25 +20,25 @@ package org.sheetmc.core
 
 sealed class Outcome<out T> {
     data class Success<T>(val value: T) : Outcome<T>()
-    data class Error(val message: String, val throwable: Throwable? = null) : Outcome<Nothing>()
+    data class Failure(val message: String, val throwable: Throwable? = null) : Outcome<Nothing>()
 }
 
-class ErrorBuilder() {
+class FailureBuilder() {
     var message: String = "No message provided."
     var throwable: Throwable? = null
 
-    fun build(): Outcome.Error = Outcome.Error(message, throwable)
+    fun build(): Outcome.Failure = Outcome.Failure(message, throwable)
 }
 
-fun okay(): Outcome.Success<Boolean> = Outcome.Success(true)
-fun <T> okay(type: T): Outcome.Success<T> = Outcome.Success(type)
-fun <T> okay(block: () -> T): Outcome.Success<T> {
+fun success(): Outcome.Success<Boolean> = Outcome.Success(true)
+fun <T> success(type: T): Outcome.Success<T> = Outcome.Success(type)
+fun <T> success(block: () -> T): Outcome.Success<T> {
     return Outcome.Success(block())
 }
 
-fun failed(message: String, throwable: Throwable? = null): Outcome.Error = Outcome.Error(message, throwable)
-fun failed(block: ErrorBuilder.() -> Unit): Outcome.Error {
-    val builder = ErrorBuilder()
+fun failed(message: String, throwable: Throwable? = null): Outcome.Failure = Outcome.Failure(message, throwable)
+fun failed(block: FailureBuilder.() -> Unit): Outcome.Failure {
+    val builder = FailureBuilder()
     block(builder)
     return builder.build()
 }
