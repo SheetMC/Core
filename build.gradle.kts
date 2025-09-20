@@ -44,6 +44,6 @@ kotlin {
 
 dokka {
     dokkaPublications.html {
-        outputDirectory.set(layout.projectDirectory.dir("docs").asFile)
+        outputDirectory.set(layout.projectDirectory.dir("docs/html").asFile)
     }
 }
