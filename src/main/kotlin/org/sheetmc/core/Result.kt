@@ -23,10 +23,30 @@ sealed class Result<out T> {
     data class Error(val message: String, val throwable: Throwable? = null) : Result<Nothing>()
 }
 
+class ErrorBuilder() {
+    var message: String = "No message provided."
+    var throwable: Throwable? = null
+
+    fun message(message: String) {
+        this.message = message
+    }
+
+    fun throwable(throwable: Throwable) {
+        this.throwable = throwable
+    }
+
+    fun build(): Result.Error = Result.Error(message, throwable)
+}
+
 fun Okay(): Result.Success<Boolean> = Result.Success(true)
 fun <T> Okay(type: T): Result.Success<T> = Result.Success(type)
 fun <T> Okay(block: () -> T): Result.Success<T> {
     return Result.Success(block())
 }
 
-fun Error(message: String): Result.Error = Result.Error(message)
+fun Error(message: String, throwable: Throwable? = null): Result.Error = Result.Error(message, throwable)
+fun Error(block: ErrorBuilder.() -> Unit): Result.Error {
+    val builder = ErrorBuilder()
+    block(builder)
+    return builder.build()
+}
